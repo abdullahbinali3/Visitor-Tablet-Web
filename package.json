@@ -1,0 +1,29 @@
+{
+    "name": "routify-starter",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "run-p dev:*",
+        "dev:routify": "routify",
+        "dev:vite": "vite",
+        "preview": "vite preview",
+        "build": "run-s build:*",
+        "build:routify": "routify -b",
+        "build:vite": "vite build"
+    },
+    "devDependencies": {
+        "@roxi/routify": "^2.18.18",
+        "@sveltejs/vite-plugin-svelte": "^3.1.2",
+        "@tailwindcss/forms": "^0.5.9",
+        "autoprefixer": "^10.4.20",
+        "moment-timezone": "^0.5.45",
+        "npm-run-all": "^4.1.5",
+        "postcss": "^8.4.47",
+        "postcss-import": "^16.1.0",
+        "svelte": "^4.2.19",
+        "svelte-i18n": "^4.0.0",
+        "svelte-preprocess": "^6.0.2",
+        "tailwindcss": "^3.4.13",
+        "vite": "^5.4.7"
+    }
+}

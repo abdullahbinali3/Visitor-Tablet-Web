@@ -1,0 +1,8 @@
+{
+    "i18n-ally.localesPaths": [
+        "src/locales"
+    ],
+    "i18n-ally.keystyle": "nested",
+    "svelte.plugin.svelte.format.config.printWidth": 150,
+    "editor.tabSize": 2
+}
