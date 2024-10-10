@@ -95,7 +95,7 @@
       </div>
 
       <div class="text-blacktext" style="font-size: 2rem;">
-        {$t("buildingSelect.title")}
+        {$t("main.selectBuilding")}
       </div>
       <div class="mt-4 relative w-full border ring-1 ring-black ring-opacity-5">
         <SolidSearchIcon className="pointer-events-none absolute top-3 left-4 h-8 w-8 text-gray-400" />
