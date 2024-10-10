@@ -79,7 +79,7 @@
 </script>
 
 <div class="bg-white py-24 px-60 min-h-screen">
-  <div class="text-2xl text-center mb-4">{$t("SignIn")}</div>
+  <div class="text-1xl text-left text-gray-500 mb-8">{$t("signIn.title")}</div>
 
   <!-- Host Selection -->
   <div class="text-black text-2xl">{$t("title.host")}</div>
@@ -140,10 +140,17 @@
   <!-- Submit Button -->
   <div class="mt-4">
     <button
-      class="w-full text-dark bg-purple-600 text-white text-2xl py-4"
+      class="w-full text-dark bg-purple-600 text-white text-2xl rounded-xl py-4"
       on:click={submitSelection}
     >
     {$t("SignIn")}
     </button>
   </div>
+
+  <!-- Or Divider -->
+  <div class="text-lg text-center text-gray-500 my-10">________________________ {$t("or")} ________________________</div>
+  
+  <!-- Sign in with QR Code Button -->
+  <button class=" bg-white text-black border-2 border-gray-300 w-full py-4 text-lg rounded-xl mt-5 hover:bg-purple-600 hover:text-white transition duration-300">{$t("signin.QR")}</button>
+
 </div>
