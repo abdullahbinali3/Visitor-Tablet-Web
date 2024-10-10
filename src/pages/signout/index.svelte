@@ -140,7 +140,7 @@
   <!-- Submit Button -->
   <div class="mt-10">
     <button
-      class="w-full text-dark bg-purple-600 text-white text-2xl py-4"
+      class="w-full text-dark bg-purple-600 text-white rounded-xl text-2xl py-4"
       on:click={submitSelection}
     >
     {$t("signout")}
