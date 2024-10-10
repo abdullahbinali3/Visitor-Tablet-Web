@@ -57,5 +57,16 @@
   "success.bookingExtended": "Booking extended successfully.",
   "success.checkedIn": "Checked in successfully.",
   "warning.warning": "Warning!",
-  "transfer-received": "You received {amount, number, currency} at {wireDate, time, short} on {wireDate, date, long}"
+  "transfer-received": "You received {amount, number, currency} at {wireDate, time, short} on {wireDate, date, long}",
+  "checkIn.title":"Check In by entering the host and visitor's name",
+  "title.host":"Select a Host",
+  "title.visitor":"Select Visitors",
+  "search.host":"Search host's name",
+  "search.visitor":"Search Visitor's name",
+  "checkin.btn":"Check In",
+  "Welcome":"Welcome",
+  "SignIn":"Sign In",
+  "Signout":"Sign Out",
+  "or":"or",
+  "RegistorVisitor":"Registor Visitor"
 }
