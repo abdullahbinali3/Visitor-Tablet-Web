@@ -1,6 +1,7 @@
 <script>
   import { t } from "svelte-i18n";
   import SolidSearchIcon from "$icons/SolidSearchIcon.svelte";
+
   let filteredHosts = [];
   let filteredVisitors = [];
   let selectedHost = null;
@@ -14,7 +15,8 @@
     { id: 1, name: "Host 1" },
     { id: 2, name: "Host 2" },
     { id: 3, name: "Host 3" },
-    
+    { id: 4, name: "Host 4" },
+    { id: 5, name: "Host 5" },
   ];
 
   let visitors = [
@@ -22,6 +24,7 @@
     { id: 2, name: "Visitor 2" },
     { id: 3, name: "Visitor 3" },
     { id: 4, name: "Visitor 4" },
+    { id: 5, name: "Visitor 5" },
   ];
 
   // Initialize with all hosts and visitors
@@ -75,22 +78,11 @@
   }
 </script>
 
-<style>
-  .selected {
-    background-color: #e5e5e5;
-  }
-  .customPad{
-    padding: 100px 240px;
-  }
-
-</style>
-
-<div class=" bg-white  py-12 customPad px-4" style="min-height:100vh ">
-  <div class="text-2xl text-center mb-4">{$t("checkIn.title")}</div>
+<div class="bg-white py-24 px-60 min-h-screen">
+  <div class="text-2xl text-center mb-4">{$t("SignIn")}</div>
 
   <!-- Host Selection -->
-  <div class="text-blacktext" style="font-size: 2rem;">{$t("title.host")}</div>
-  
+  <div class="text-black text-2xl">{$t("title.host")}</div>
   <div class="mt-4 relative w-full border ring-1 ring-black ring-opacity-5">
     <SolidSearchIcon className="pointer-events-none absolute top-3 left-4 h-8 w-8 text-gray-400" />
     <input
@@ -107,7 +99,7 @@
         <li
           class="cursor-pointer px-4 py-2 truncate text-2xl font-medium"
           on:click={() => selectHost(host)}
-          class:selected={selectedHost === host}
+          class:bg-gray-300={selectedHost === host}  
         >
           {host.name}
         </li>
@@ -116,48 +108,42 @@
   </div>
 
   <!-- Visitor Selection -->
-
-    <div class="mt-8">
-      <div class="text-blacktext mt-4" style="font-size: 2rem;">{$t("title.visitor")}</div>
-      
-      <div class="mt-4 relative w-full border ring-1 ring-black ring-opacity-5">
-        <SolidSearchIcon className="pointer-events-none absolute top-3 left-4 h-8 w-8 text-gray-400" />
-        <input
-          type="text"
-          bind:value={searchValueVisitor}
-          on:input={(e) => updateSearchVisitors(e.target.value)}
-          class="h-12 w-full border-0 bg-transparent pl-[4rem] pr-4 text-gray-800 placeholder-gray-400 focus:ring-0 text-2xl mb-1"
-          placeholder={$t("search.visitor")}
-        />
-      </div>
-      {#if showVisitors}
-      <div class="h-[10rem] overflow-y-scroll bg-white shadow ring-1 ring-black ring-opacity-5 rounded-b-md">
-        <ul class="divide-y divide-gray-200">
-          {#each filteredVisitors as visitor}
-            <li
-              class="cursor-pointer px-4 py-2 truncate text-2xl font-medium"
-              on:click={() => toggleVisitor(visitor)}
-              class:selected={isSelected(visitor, selectedVisitors)}
-            >
-              {visitor.name}
-            </li>
-          {/each}
-        </ul>
-      </div>
- 
+  {#if showVisitors}
+  <div class="mt-8">
+    <div class="text-black text-2xl">{$t("title.visitor")}</div>
+  <div class="mt-4 relative w-full border ring-1 ring-black ring-opacity-5">
+    <SolidSearchIcon className="pointer-events-none absolute top-3 left-4 h-8 w-8 text-gray-400" />
+    <input
+      type="text"
+      bind:value={searchValueVisitor}
+      on:input={(e) => updateSearchVisitors(e.target.value)}
+      class="h-12 w-full border-0 bg-transparent pl-[4rem] pr-4 text-gray-800 placeholder-gray-400 focus:ring-0 text-2xl mb-1"
+      placeholder={$t("search.visitor")}
+    />
+  </div>
+    <div class="h-[10rem] overflow-y-scroll bg-white shadow ring-1 ring-black ring-opacity-5 rounded-b-md">
+      <ul class="divide-y divide-gray-200">
+        {#each filteredVisitors as visitor}
+          <li
+            class="cursor-pointer px-4 py-2 truncate text-2xl font-medium"
+            on:click={() => toggleVisitor(visitor)}
+            class:bg-gray-300={isSelected(visitor, selectedVisitors)} 
+          >
+            {visitor.name}
+          </li>
+        {/each}
+      </ul>
+    </div>
+  </div>
   {/if}
-</div>
 
   <!-- Submit Button -->
- 
-    <div class="mt-4">
-      <button
-      
-      class="w-full text-dark border text-white text-2xl py-4" style="background-color: #6a29f5;"
+  <div class="mt-4">
+    <button
+      class="w-full text-dark bg-purple-600 text-white text-2xl py-4"
       on:click={submitSelection}
     >
-    {$t("checkin.btn")}
+    {$t("SignIn")}
     </button>
-    </div> 
-
+  </div>
 </div>
