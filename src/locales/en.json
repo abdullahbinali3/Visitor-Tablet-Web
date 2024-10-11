@@ -30,10 +30,9 @@
   "success": "Success!",
   "search.host":"Search host's name",
   "search.visitor":"Search Visitor's name",
-  "signIn.title":"Sign In by entering the host and visitor's name",
-  "signin.QR": "Sign in with QR Code",
-  "SignIn":"Sign In",
-  "Signout":"Sign Out",
+  "signin.qrButton": "Sign in with QR Code",
+  "signin.signinButton":"Sign In",
+  "signout.signoutButton":"Sign Out",
   "success.success": "Success!",
   "success.bookingCreated": "Booking created successfully.",
   "success.bookingFinished": "Booking finished successfully.",
@@ -64,9 +63,10 @@
   "transfer-received": "You received {amount, number, currency} at {wireDate, time, short} on {wireDate, date, long}",
   "title.host":"Select a Host",
   "title.visitor":"Select a Visitor",
-  "Welcome":"Welcome",
+  "title.welcome":"Welcome",
+  "title.signin":"Sign In by entering the host and visitor's name",
   "warning.warning": "Warning!",
   "warning": "Warning!",
   "or":"or",
-  "RegistorVisitor":"Registor Visitor"
+  "registorvisitor.registorvisitorButton":"Registor Visitor"
 }

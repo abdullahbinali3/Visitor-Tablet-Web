@@ -1,6 +1,8 @@
 <script>
   import { t } from "svelte-i18n";
-  import SolidSearchIcon from "$icons/SolidSearchIcon.svelte";
+  import Button from "$components/common/Button.svelte";
+  import HostVisitorSelector from "$components/common/HostVisitorSelect.svelte";
+  import Divider from "$components/common/Divider.svelte";
 
   let filteredHosts = [];
   let filteredVisitors = [];
@@ -10,7 +12,6 @@
   let searchValueHost = "";
   let searchValueVisitor = "";
 
-  // Sample data for hosts and visitors
   let hosts = [
     { id: 1, name: "Host 1" },
     { id: 2, name: "Host 2" },
@@ -78,79 +79,51 @@
   }
 </script>
 
-<div class="bg-white py-24 px-60 min-h-screen">
-  <div class="text-1xl text-left text-gray-500 mb-8">{$t("signIn.title")}</div>
+<!-- Main Container -->
+<div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-background">
+  <!-- Content Container (with relative positioning) -->
+  <div class="max-w-3xl w-full min-h-[500px] sm:min-h-[400px] space-y-4 bg-white p-10 sm:p-12 lg:p-16 rounded-3xl relative">
+ 
+  <div class="mt-3 text-2xl text-center">{$t("title.signin")}</div>
 
   <!-- Host Selection -->
-  <div class="text-black text-2xl">{$t("title.host")}</div>
-  <div class="mt-4 relative w-full border ring-1 ring-black ring-opacity-5">
-    <SolidSearchIcon className="pointer-events-none absolute top-3 left-4 h-8 w-8 text-gray-400" />
-    <input
-      type="text"
-      bind:value={searchValueHost}
-      on:input={(e) => updateSearchHosts(e.target.value)}
-      class="h-12 w-full border-0 bg-transparent pl-[4rem] pr-4 text-gray-800 placeholder-gray-400 focus:ring-0 text-2xl mb-1"
-      placeholder={$t("search.host")}
-    />
-  </div>
-  <div class="h-[10rem] overflow-y-scroll bg-white shadow ring-1 ring-black ring-opacity-5 rounded-b-md">
-    <ul class="divide-y divide-gray-200">
-      {#each filteredHosts as host}
-        <li
-          class="cursor-pointer px-4 py-2 truncate text-2xl font-medium"
-          on:click={() => selectHost(host)}
-          class:bg-gray-300={selectedHost === host}  
-        >
-          {host.name}
-        </li>
-      {/each}
-    </ul>
-  </div>
+  <HostVisitorSelector 
+    title={$t("title.host")} 
+    searchValue={searchValueHost} 
+    filteredItems={filteredHosts} 
+    selectItem={selectHost} 
+    isSelected={(host) => selectedHost === host}
+    placeholder={$t("search.host")} 
+  />
 
   <!-- Visitor Selection -->
   {#if showVisitors}
-  <div class="mt-8">
-    <div class="text-black text-2xl">{$t("title.visitor")}</div>
-  <div class="mt-4 relative w-full border ring-1 ring-black ring-opacity-5">
-    <SolidSearchIcon className="pointer-events-none absolute top-3 left-4 h-8 w-8 text-gray-400" />
-    <input
-      type="text"
-      bind:value={searchValueVisitor}
-      on:input={(e) => updateSearchVisitors(e.target.value)}
-      class="h-12 w-full border-0 bg-transparent pl-[4rem] pr-4 text-gray-800 placeholder-gray-400 focus:ring-0 text-2xl mb-1"
-      placeholder={$t("search.visitor")}
+    <HostVisitorSelector 
+      title={$t("title.visitor")} 
+      searchValue={searchValueVisitor} 
+      filteredItems={filteredVisitors} 
+      selectItem={toggleVisitor} 
+      isSelected={(visitor) => isSelected(visitor, selectedVisitors)}
+      placeholder={$t("search.visitor")} 
     />
-  </div>
-    <div class="h-[10rem] overflow-y-scroll bg-white shadow ring-1 ring-black ring-opacity-5 rounded-b-md">
-      <ul class="divide-y divide-gray-200">
-        {#each filteredVisitors as visitor}
-          <li
-            class="cursor-pointer px-4 py-2 truncate text-2xl font-medium"
-            on:click={() => toggleVisitor(visitor)}
-            class:bg-gray-300={isSelected(visitor, selectedVisitors)} 
-          >
-            {visitor.name}
-          </li>
-        {/each}
-      </ul>
-    </div>
-  </div>
   {/if}
 
   <!-- Submit Button -->
   <div class="mt-4">
-    <button
-      class="w-full text-dark bg-purple-600 text-white text-2xl rounded-xl py-4"
+    <Button
+      className="w-full"
       on:click={submitSelection}
     >
-    {$t("SignIn")}
-    </button>
+      {$t("signin.signinButton")}
+    </Button>
   </div>
 
   <!-- Or Divider -->
-  <div class="text-lg text-center text-gray-500 my-10">________________________ {$t("or")} ________________________</div>
-  
-  <!-- Sign in with QR Code Button -->
-  <button class=" bg-white text-black border-2 border-gray-300 w-full py-4 text-lg rounded-xl mt-5 hover:bg-purple-600 hover:text-white transition duration-300">{$t("signin.QR")}</button>
+  <Divider />
 
+  <!-- Sign in with QR Code Button -->
+  <Button type="simple" className="w-full sm:w-auto py-3 sm:py-4 text-lg mt-5">
+    {$t("signin.qrButton")}
+  </Button>
+</div>
 </div>
