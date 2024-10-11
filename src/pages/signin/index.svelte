@@ -109,7 +109,7 @@
   {/if}
 
   <!-- Submit Button -->
-  <div class="mt-4">
+  <div class="flex justify-center">
     <Button
       className="w-full"
       on:click={submitSelection}
@@ -122,8 +122,10 @@
   <Divider />
 
   <!-- Sign in with QR Code Button -->
+  <div class="flex justify-center">
   <Button type="simple" className="w-full sm:w-auto py-3 sm:py-4 text-lg mt-5">
     {$t("signin.qrButton")}
   </Button>
+</div>
 </div>
 </div>
