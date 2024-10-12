@@ -27,7 +27,6 @@
   "support.tryAgain": "Try again",
   "support.goBackHome": "Go back Home",
   "support.contactSupport": "Contact support",
-  "success": "Success!",
   "search.host":"Search host's name",
   "search.visitor":"Search Visitor's name",
   "signin.qrButton": "Sign in with QR Code",
@@ -66,6 +65,9 @@
   "title.visitor":"Select a Visitor",
   "title.welcome":"Welcome",
   "title.signin":"Sign In by entering the host and visitor's name",
+  "signout.title": "Sign Out by entering details host name and visitor names",
+  "signout": "Sign Out",
+  "signin.QR": "Sign in with QR Code",
   "warning.warning": "Warning!",
   "warning": "Warning!",
   "or":"or"
