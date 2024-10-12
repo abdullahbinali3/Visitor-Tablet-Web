@@ -65,10 +65,12 @@
   "title.visitor":"Select a Visitor",
   "title.welcome":"Welcome",
   "title.signin":"Sign In by entering the host and visitor's name",
-  "signout.title": "Sign Out by entering details host name and visitor names",
+  "title.signout": "Sign Out by entering details host and visitor names",
   "signout": "Sign Out",
   "signin.QR": "Sign in with QR Code",
   "warning.warning": "Warning!",
   "warning": "Warning!",
   "or":"or"
 }
+
+add divider and hostvisitselect files to made it reuseable
