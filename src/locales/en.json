@@ -68,7 +68,19 @@
   "title.signout": "Sign Out by entering details host and visitor names",
   "signout": "Sign Out",
   "signin.QR": "Sign in with QR Code",
+  "signin/signout.signin/signoutButton": "Sign In / Sign Out",
+  "submit.submitButton": "Submit",
   "warning.warning": "Warning!",
   "warning": "Warning!",
-  "or":"or"
+  "or":"or",
+  "registervisitor.addanothervisitorButton": "Add Another Visitor",
+  "registervisitor.firstnamePlaceholder": "First Name",
+  "registervisitor.surnamePlaceholder": "Surname",
+  "registervisitor.mobilenumberPlaceholder": "Mobile Number",
+  "registervisitor.companyPlaceholder": "Company",
+  "registervisitor.purposePlaceholder": "Purpose",
+  "registervisitor.title": "Register Visitor",
+  "registervisitor.visitoraccessLabel": "Visitor Access for",
+  "registervisitor.selecthostLabel": "Select Host"
+
 }
