@@ -42,6 +42,7 @@
   "main.searchOrganizationsName": "Search organization's name...",
   "main.selectBuilding": "Select Building",
   "main.searchBuildingsName": "Search building's name...",
+  "welcome.registerButton":"Register Visitor",
   "error.error": "Error",
   "error.doNotHavePermission": "You do not have permission to perform this action.",
   "error.invalidPage": "Invalid page.",
@@ -67,6 +68,5 @@
   "title.signin":"Sign In by entering the host and visitor's name",
   "warning.warning": "Warning!",
   "warning": "Warning!",
-  "or":"or",
-  "registorvisitor.registorvisitorButton":"Registor Visitor"
+  "or":"or"
 }

@@ -2,6 +2,7 @@
   import { t } from "svelte-i18n";
   import Button from "$components/common/Button.svelte";
   import Divider from "$components/common/Divider.svelte";
+  // function route to sign-in
   function goToSignIn() {
       window.location.href = "/signin";
   }
@@ -39,7 +40,7 @@
     <!-- Register Visitor Button -->
     <div class="flex justify-center">
       <Button type="simple" class="w-full sm:w-auto py-3 sm:py-4 text-lg mt-5">
-        {$t("registorvisitor.registorvisitorButton")}
+        {$t("welcome.registerButton")}
       </Button>
     </div>
   </div>
