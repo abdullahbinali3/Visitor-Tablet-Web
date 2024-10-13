@@ -1,10 +1,16 @@
 <script>
+	import { onMount } from 'svelte';
   import { url } from "@roxi/routify";
   import { t } from "svelte-i18n";
   import appData from "$stores/app-data-store.js";
 
   $appData.pageTitle = "Page Not Found";
   $appData.breadcrumbs = [];
+  onMount(() => {
+  console.log("Navigated to Home Page");
+  // Existing logic...
+});
+
 </script>
 
 <div
