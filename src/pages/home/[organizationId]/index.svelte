@@ -62,7 +62,10 @@
       return multiSearchOr(item.name, searchTerms);
     });
   }
-
+ 
+ function goToWelcome() {
+      window.location.href = "/welcome";
+  }
   function handleClick(organizationId) {
     if (organizationId === null) {
       return;
@@ -113,7 +116,7 @@
           {#each filteredbuildings as building, i (building.id)}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-            <li class="cursor-pointer" on:click={() => handleClick(building.id)}>
+            <li class="cursor-pointer" on:click={goToWelcome}>
               <div class="block hover:bg-gray-100" class:bg-gray-50={i % 2 == 0}>
                 <div class="flex items-center pr-4 py-2 sm:pr-6">
                   <div class="flex min-w-0 flex-1 basis-full md:basis-2/5 items-center">
