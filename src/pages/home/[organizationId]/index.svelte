@@ -63,14 +63,13 @@
     });
   }
  
- function goToWelcome() {
-      window.location.href = "/welcome";
-  }
+
   function handleClick(organizationId) {
-    if (organizationId === null) {
-      return;
-    }
-    $goto("/home/:organizationId/:buildingId", { organizationId: guid_to_base64(organizationId) }, { buildingId: guid_to_base64(lastBuildingId) }  );
+    $goto(organizationId);
+    // if (organizationId === null) {
+    //   return;
+    // }
+    // $goto("/home/:organizationId/:buildingId", { organizationId: guid_to_base64(organizationId) }, { buildingId: guid_to_base64(lastBuildingId) }  );
   }
 
   // If user is only assigned to one organization, navigate to the next page automatically.
@@ -116,7 +115,7 @@
           {#each filteredbuildings as building, i (building.id)}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-            <li class="cursor-pointer" on:click={goToWelcome}>
+            <li class="cursor-pointer" on:click={()=>handleClick("/welcome")}>
               <div class="block hover:bg-gray-100" class:bg-gray-50={i % 2 == 0}>
                 <div class="flex items-center pr-4 py-2 sm:pr-6">
                   <div class="flex min-w-0 flex-1 basis-full md:basis-2/5 items-center">
