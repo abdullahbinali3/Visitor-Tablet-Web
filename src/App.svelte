@@ -8,6 +8,7 @@
   import { parseCookie } from "$helpers/parseCookie.js";
   import { parseResponse } from "$helpers/parseResponse.js";
   import { getUserData } from "$helpers/auth.js";
+
   import Preloader from "$components/common/Preloader.svelte";
   import NoPortalAccess from "$components/layout/NoPortalAccess.svelte";
   import AppInitError from "$components/layout/AppInitError.svelte";
