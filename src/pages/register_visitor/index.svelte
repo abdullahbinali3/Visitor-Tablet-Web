@@ -94,13 +94,13 @@
 
           <!-- Date and Time fields using DateInput and TimeInput components -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <DateInput label="Start Date" bindValue={startDate} />
-              <TimeInput label="Start Time" bindValue={startTime} />
+              <DateInput label={$t("startDate")} bindValue={startDate} />
+              <TimeInput label={$t("startTime")} bindValue={startTime} />
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <DateInput label="End Date" bindValue={endDate} />
-              <TimeInput label="End Time" bindValue={endTime} />
+              <DateInput label={$t("endDate")} bindValue={endDate} />
+              <TimeInput label={$t("endTime")} bindValue={endTime} />
           </div>
 
           <!-- Button to add another visitor (currently not functional) -->
