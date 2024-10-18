@@ -1,42 +1,47 @@
-
-import { get } from 'svelte/store';
 import buildingData from '$stores/buildings-store.js'; 
-import appData from "$stores/app-data-store.js";
+import { fetchApi } from './apiCall.js'; 
+const server_URL ="http://localhost:5695"
 
-
-export async function getbuildingData(id) {
+// api calling for saving getting building according to the organizations
+export async function getbuildingData(id){
   buildingData.set({ loading: true, buildings: [], error: null });
-  let newAppData = get(appData);
-  newAppData.loginError = false;
-  newAppData.initialUserLoggedInCheckDone = false;
+  const url = `${server_URL}/buildings/${id}/listForDropdown`;
 
-  // Get buildings details details
   try {
-    const res = await fetch(`${get(appData).apiUrl}/buildings/${id}/listForDropdown`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${newAppData.authToken}`,
-      },
-    });
-    if (res.status === 401) {
-      localStorage.removeItem("authToken");
-      localStorage.removeItem("uid");
-      localStorage.removeItem("organizationId");
-      localStorage.removeItem("buildingId");
-
-      throw new Error("Not logged in");
-    }
-    if (!res.ok) {
-      throw new Error("An error occurred when requesting data. Please try again.");
-    }
-    const data = await res.json();
-    buildingData.set({ buildings: data.records, loading: false, error: null }); // Update the store with API response
+    const data = await fetchApi(url, "GET"); 
+    buildingData.set({ buildings: data.records, loading: false, error: null });
+    buildingData.subscribe(value => {
+      console.log('Updated buildingData:', value);
+    })();
     return data;
   } catch (error) {
-    if (error && error.message === "Not logged in") {
-      return;
+    if (error.message === "Not logged in") {
+      return; 
     }
     buildingData.set({ buildings: [], loading: false, error: error.message });
+    buildingData.subscribe(value => {
+      console.log('Error buildingData:', value);
+    })();
   }
-    
+}
+
+// Api calling for submission of register data
+export async function postVisitorData(body ,header){
+  try {
+    const data = await fetchApi(`${server_URL}/visit/register`, "POST" , body , header ); 
+    return data;
+  } catch (error) {
+    return error
+  }
+}
+
+// api calling for getting hosts name
+export async function getHosts(id) {
+  try {
+    const data = await fetchApi(`${server_URL}/users/${id}/listForDropdown`, "GET"  ); 
+    return data;
+  } catch (error) {
+    return error
+  }
+  
 }
