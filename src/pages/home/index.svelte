@@ -7,6 +7,8 @@
   import { guid_to_base64 } from "$helpers/guid.js";
 
   import SolidSearchIcon from "$icons/SolidSearchIcon.svelte";
+ 
+
   import OutlineArrowSmallRightIcon from "$icons/OutlineArrowSmallRightIcon.svelte";
 
   let filteredOrganizations = [];
@@ -114,7 +116,7 @@
       <div class="h-[17rem] overflow-y-scroll bg-white shadow ring-1 ring-black ring-opacity-5 rounded-b-md">
         <ul class="divide-y divide-gray-200">
           {#each filteredOrganizations as organization, i (organization.id)}
-            <li class="cursor-pointer" on:click={() => handleClick(organization.id)}>
+            <li class="cursor-pointer" on:click={() =>{localStorage.setItem('selectedOrganizationId', organization.id); handleClick(organization.id)}}>
               <div class="block hover:bg-gray-100" class:bg-gray-50={i % 2 == 0}>
                 <div class="flex items-center pr-4 py-2 sm:pr-6">
                   <div class="flex min-w-0 flex-1 basis-full md:basis-2/5 items-center">

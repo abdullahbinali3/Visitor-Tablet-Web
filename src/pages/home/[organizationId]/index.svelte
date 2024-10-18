@@ -1,41 +1,39 @@
 <script>
-	import { onDestroy } from 'svelte';
-	import { onMount } from 'svelte';
-	import { getUserData } from '$helpers/auth.js';
+  import { onDestroy } from "svelte";
+  import { onMount } from "svelte";
+  import { getUserData } from "$helpers/auth.js";
   import { goto } from "@roxi/routify";
   import { t } from "svelte-i18n";
   import user from "$stores/user-store.js";
   import buildingData from "$stores/buildings-store.js";
   import { multiSearchOr } from "$helpers/search.js";
   import { buildImageUrl } from "$helpers/formatters.js";
-  import { guid_to_base64 , base64_to_guid } from "$helpers/guid.js";
+  import { guid_to_base64, base64_to_guid } from "$helpers/guid.js";
   import SolidSearchIcon from "$icons/SolidSearchIcon.svelte";
   import OutlineArrowSmallRightIcon from "$icons/OutlineArrowSmallRightIcon.svelte";
-  import {getbuildingData} from '$helpers/api.js';
-  
+  import { getbuildingData } from "$helpers/api.js";
+
   let filteredbuildings = [];
   let lastUid = localStorage.getItem("uid");
   let lastOrganizationId = localStorage.getItem("organizationId");
   let lastBuildingId = localStorage.getItem("buildingId");
   let showList = true;
-
-  
   let buildings = [];
   let loading = true;
   let error = null;
 
-    // Subscribe to the store
-    const unsubscribe = buildingData.subscribe(value => {
-      if (value) {
+  // Subscribe to the store
+  const unsubscribe = buildingData.subscribe((value) => {
+    if (value) {
       loading = value.loading;
       error = value.error;
       if (!loading && value.buildings) {
-      buildings = value.buildings;
-      filteredbuildings = buildings; 
-  }
-    }      // Get error state
+        buildings = value.buildings;
+        filteredbuildings = buildings;
+      }
+    } // Get error state
   });
-  
+
   if (lastUid === $user.userData.uid && lastOrganizationId !== null && lastBuildingId !== null) {
     showList = false;
     $goto("/", {
@@ -64,43 +62,35 @@
     updateSearch(e.target.value);
   }
 
-
-
   onMount(() => {
-  buildings = [];
-  filteredbuildings = [];
-  loading = true;
-  error = null;
     let id;
     const url = window.location.href;
     const match = url.match(/\/home\/([A-Za-z0-9]+)/); // Regex to match the ID
 
     if (match) {
-       id = base64_to_guid(match[1]); // Extracted ID
+      id = base64_to_guid(match[1]); // Extracted ID
     }
     getbuildingData(id)
-    .then(response => {
-      // Assuming response contains the building data
-      buildings = response.records; // Adjust based on your API response structure
-      filteredbuildings = buildings; // Initialize filtered buildings
-    })
-    .catch(err => {
-      error = err.message; // Handle error
-    })
-    .finally(() => {
-      loading = false; // Stop loading
-    });
- 
+      .then((response) => {
+        // Assuming response contains the building data
+        if (response && response.records) {
+          filteredBuildings = response.records; // Use records from the API response
+        }
+      })
+      .catch((err) => {
+        error = err.message; // Handle error
+      })
+      .finally(() => {
+        loading = false; // Stop loading
+      });
   });
 
   onDestroy(() => {
     unsubscribe(); // Clean up the subscription
   });
 
-
-
   function updateSearch(val) {
-    if ( !buildings) {
+    if (!buildings) {
       filteredbuildings = [];
       return;
     }
@@ -119,7 +109,6 @@
       return multiSearchOr(item.text, searchTerms);
     });
   }
- 
 
   function handleClick(organizationId) {
     $goto(organizationId);
@@ -143,7 +132,6 @@
     updateSearch("");
   }
 </script>
-
 
 {#if showList && buildings.length >= 1}
   <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-background">
@@ -172,7 +160,15 @@
           {#each filteredbuildings as building, i (building.value)}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-            <li class="cursor-pointer" on:click={()=>handleClick("/welcome")}>
+            <li
+              class="cursor-pointer"
+              on:click={() => {
+                localStorage.setItem("selectedBuildingId", building.value);
+
+                localStorage.setItem("buildingsData", JSON.stringify(filteredbuildings));
+                handleClick("/welcome");
+              }}
+            >
               <div class="block hover:bg-gray-100" class:bg-gray-50={i % 2 == 0}>
                 <div class="flex items-center pr-4 py-2 sm:pr-6">
                   <div class="flex min-w-0 flex-1 basis-full md:basis-2/5 items-center">

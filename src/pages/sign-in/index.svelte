@@ -3,7 +3,8 @@
   import Button from "$components/common/Button.svelte";
   import HostVisitorSelector from "$components/common/HostVisitorSelect.svelte";
   import Divider from "$components/common/Divider.svelte";
-
+  import CaretLeftSolid from "$icons/SolidChevronLeftIcon.svelte";
+  import { goto } from "@roxi/routify";
   let filteredHosts = [];
   let filteredVisitors = [];
   let selectedHost = null;
@@ -83,30 +84,36 @@
 <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-background">
   <!-- Content Container (with relative positioning) -->
   <div class="max-w-3xl w-full min-h-[500px] sm:min-h-[400px] space-y-4 bg-white p-10 sm:p-12 lg:p-16 rounded-3xl relative">
- 
-  <div class="mt-3 text-2xl text-center">{$t("title.signin")}</div>
+    <div class="flex cursor-pointer" on:click={$goto("/welcome")}>
+      <CaretLeftSolid />
+      <p>Back</p>
+        </div>
+  <div class="mt-3 mb-12 text-4xl font-semibold text-center">{$t("title.signin")}</div>
 
-  <!-- Host Selection -->
+
+
   <HostVisitorSelector 
-    title={$t("title.host")} 
-    searchValue={searchValueHost} 
-    filteredItems={filteredHosts} 
-    selectItem={selectHost} 
-    isSelected={(host) => selectedHost === host}
-    placeholder={$t("search.host")} 
-  />
+  title={$t("title.host")} 
+  searchValue={searchValueHost} 
+  filteredItems={filteredHosts} 
+  selectItem={selectHost} 
+  isSelected={(host) => selectedHost === host}
+  placeholder={$t("search.host")} 
+  onSearchChange={updateSearchHosts} 
+/>
 
-  <!-- Visitor Selection -->
-  {#if showVisitors}
-    <HostVisitorSelector 
-      title={$t("title.visitor")} 
-      searchValue={searchValueVisitor} 
-      filteredItems={filteredVisitors} 
-      selectItem={toggleVisitor} 
-      isSelected={(visitor) => isSelected(visitor, selectedVisitors)}
-      placeholder={$t("search.visitor")} 
-    />
-  {/if}
+{#if showVisitors}
+  <HostVisitorSelector 
+    title={$t("title.visitor")} 
+    searchValue={searchValueVisitor} 
+    filteredItems={filteredVisitors} 
+    selectItem={toggleVisitor} 
+    isSelected={(visitor) => isSelected(visitor, selectedVisitors)}
+    placeholder={$t("search.visitor")} 
+    onSearchChange={updateSearchVisitors}
+  />
+{/if}
+
 
   <!-- Submit Button -->
   <div class="flex justify-center">
