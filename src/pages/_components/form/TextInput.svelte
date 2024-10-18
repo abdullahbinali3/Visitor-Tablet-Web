@@ -130,7 +130,7 @@
       <label for={name} class="block">
         <span
           class="{required ? "after:content-['*'] after:ml-0.5 after:text-red-500" : ''}
-          block text-2xl font-medium text-gray-700">
+          block  text-gray-600">
           {label}
         </span>
       </label>
@@ -238,7 +238,7 @@
   {:else if type === 'textarea'}
     <textarea
       bind:this={inputElem}
-      class="shadow-sm mt-1 block w-full sm:text-2xl border rounded-md
+      class="shadow-sm mt-1 block w-full  border rounded-md
       disabled:bg-gray-50 disabled:text-gray-500 disabled:border-gray-200
       disabled:shadow-none {borderClasses}"
       {rows}
@@ -250,11 +250,11 @@
       {tabindex}
       on:input={handleInput}
       on:blur={handleBlur} />
-  {:else if type === 'text'}
+  {:else if type === 'text' || type === 'email' || type === 'number'}
     <input
       bind:this={inputElem}
       {type}
-      class="mt-1 block w-full shadow-sm sm:text-2xl rounded-md
+      class="mt-1 block w-full shadow-sm rounded-md
       disabled:bg-gray-50 disabled:text-gray-500 disabled:border-gray-200
       disabled:shadow-none {borderClasses}"
       {value}

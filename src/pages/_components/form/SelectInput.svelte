@@ -28,6 +28,8 @@
   }
 
   $: borderClasses = getBorderColor(!valid && touched);
+
+
 </script>
 
 <div class={containerClass}>
@@ -46,7 +48,7 @@
     {/if}
   {/if}
   <select
-    class="mt-1 block w-full shadow-sm sm:text-2xl rounded-md disabled:bg-gray-50
+    class="mt-1 block w-full shadow-sm rounded-md disabled:bg-gray-50
     disabled:text-gray-500 disabled:border-gray-200 disabled:shadow-none {borderClasses}"
     bind:value
     id={name}
@@ -55,7 +57,8 @@
     {tabindex}
     on:change
     on:blur={() => (touched = true)}>
-    <option value={null}>--- Please Select ---</option>
+    <option value=""  disabled selected={!value}>-- Select --</option>
+
     {#each items as item}
       {#if typeof item === 'string'}
         <option value={item}>{item}</option>
