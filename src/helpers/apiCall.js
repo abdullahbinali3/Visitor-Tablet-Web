@@ -1,6 +1,5 @@
-import { get } from 'svelte/store';
+import { get } from "svelte/store";
 import appData from "$stores/app-data-store.js";
-
 
 //common function for all the api in which we just pass header,body,url and tell the method according to our api
 export async function fetchApi(url, method, body = null, headers = {}) {

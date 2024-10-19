@@ -23,7 +23,11 @@
     if (typeof messages === "string") {
       json = JSON.parse(messages);
     } else if (Array.isArray(messages) && messages.length === 1) {
-      if (typeof messages[0] === "object" && !Array.isArray(messages[0]) && messages[0] !== null) {
+      if (
+        typeof messages[0] === "object" &&
+        !Array.isArray(messages[0]) &&
+        messages[0] !== null
+      ) {
         json = messages[0];
       }
     }
@@ -31,7 +35,10 @@
 
     if (jsonObjectEntries.length > 1) {
       multipleJsonEntries = true;
-    } else if (jsonObjectEntries.length == 1 && jsonObjectEntries[0][1].length > 1) {
+    } else if (
+      jsonObjectEntries.length == 1 &&
+      jsonObjectEntries[0][1].length > 1
+    ) {
       multipleJsonEntries = true;
     } else {
       multipleJsonEntries = false;
@@ -78,44 +85,67 @@
 <!-- This example requires Tailwind CSS v2.0+ -->
 <!-- Global notification live region, render this permanently at the end of the document -->
 <!-- Adjust the outermost container to take up the full width -->
-<div aria-live="assertive" class="z-[1001] w-full pointer-events-none sm:items-start">
+<div
+  aria-live="assertive"
+  class="z-[1001] w-full pointer-events-none sm:items-start"
+>
   <div class="w-full flex justify-center items-center space-y-4 sm:items-end">
     <!-- Notification panel -->
-    <div class="{containerColor} w-full max-w-screen-lg shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
+    <div
+      class="{containerColor} w-full max-w-screen-lg shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden"
+    >
       <div class="p-4">
         <div class="flex items-start">
           {#if icon}
             <div class="flex-shrink-0">
               {#if icon === "success"}
-                <SolidCheckCircleIcon classColor="text-green-400 dark:text-green-300" />
+                <SolidCheckCircleIcon
+                  classColor="text-green-400 dark:text-green-300"
+                />
               {:else if icon === "error" || icon === "danger"}
                 <SolidXCircleIcon classColor="text-red-400 dark:text-red-300" />
               {:else if icon === "info"}
-                <SolidInformationCircleIcon className="text-sky-400 dark:text-cyan-300" />
+                <SolidInformationCircleIcon
+                  className="text-sky-400 dark:text-cyan-300"
+                />
               {:else if icon === "warning"}
-                <SolidExclamationTriangleIcon classColor="text-amber-400 dark:text-amber-300" />
+                <SolidExclamationTriangleIcon
+                  classColor="text-amber-400 dark:text-amber-300"
+                />
               {/if}
             </div>
           {/if}
-          <div class="text-sm ml-3 w-0 flex-1 pt-0.5 space-y-1 text-gray-500 dark:text-zinc-200">
+          <div
+            class="text-sm ml-3 w-0 flex-1 pt-0.5 space-y-1 text-gray-500 dark:text-zinc-200"
+          >
             {#if title}
-              <p class="font-medium text-gray-900 dark:text-white">{$t(title)}</p>
+              <p class="font-medium text-gray-900 dark:text-white">
+                {$t(title)}
+              </p>
             {:else if (icon === "danger" || icon === "error") && ((Array.isArray(messages) && messages.length > 1) || (json !== null && multipleJsonEntries))}
-              <p class="font-medium text-gray-900 dark:text-white pb-1">{$t("error.followingErrorsOccurred")}</p>
+              <p class="font-medium text-gray-900 dark:text-white pb-1">
+                {$t("error.followingErrorsOccurred")}
+              </p>
             {/if}
             <!-- Displaying messages -->
             {#if messages === undefined && (icon === "error" || icon === "danger")}
               <p class:pre-whitespace={pre}>{$t("error.unknown")}</p>
             {:else if json !== null && jsonObjectEntries.length === 1 && jsonObjectEntries[0][1].length === 1}
               <p class:pre-whitespace={pre}>
-                {$t(parseApiErrorParameter(jsonObjectEntries[0][1][0]).errorCode, parseApiErrorParameter(jsonObjectEntries[0][1][0]).params)}
+                {$t(
+                  parseApiErrorParameter(jsonObjectEntries[0][1][0]).errorCode,
+                  parseApiErrorParameter(jsonObjectEntries[0][1][0]).params
+                )}
               </p>
             {:else if json !== null}
               <ul class="list-disc pl-7 space-y-1">
                 {#each Object.entries(json) as [fieldName, errorArray]}
                   {#each errorArray as errorItem}
                     <li class:pre-whitespace={pre}>
-                      {$t(parseApiErrorParameter(errorItem).errorCode, parseApiErrorParameter(errorItem).params)}
+                      {$t(
+                        parseApiErrorParameter(errorItem).errorCode,
+                        parseApiErrorParameter(errorItem).params
+                      )}
                     </li>
                   {/each}
                 {/each}
@@ -133,7 +163,8 @@
                     {:else if typeof message === "object"}
                       <li>
                         <b>{message.fieldName}:</b>
-                        <span class:pre-whitespace={pre}>{message.message}</span>
+                        <span class:pre-whitespace={pre}>{message.message}</span
+                        >
                       </li>
                     {/if}
                   {/each}
@@ -158,4 +189,3 @@
     </div>
   </div>
 </div>
-

@@ -34,7 +34,11 @@
     } // Get error state
   });
 
-  if (lastUid === $user.userData.uid && lastOrganizationId !== null && lastBuildingId !== null) {
+  if (
+    lastUid === $user.userData.uid &&
+    lastOrganizationId !== null &&
+    lastBuildingId !== null
+  ) {
     showList = false;
     $goto("/", {
       organizationId: guid_to_base64(lastOrganizationId),
@@ -134,10 +138,16 @@
 </script>
 
 {#if showList && buildings.length >= 1}
-  <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-background">
+  <div
+    class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-background"
+  >
     <div class="max-w-4xl w-full space-y-4 bg-white p-12 rounded-3xl">
       <div>
-        <img class="mx-auto w-auto h-auto" src="/Example-Logo-Horizontal-Dark.png" alt="Example Application" />
+        <img
+          class="mx-auto w-auto h-auto"
+          src="/Example-Logo-Horizontal-Dark.png"
+          alt="Example Application"
+        />
         <p class="mt-3 text-2xl text-center">{$t("login.title")}</p>
       </div>
 
@@ -145,7 +155,9 @@
         {$t("main.selectBuilding")}
       </div>
       <div class="mt-4 relative w-full border ring-1 ring-black ring-opacity-5">
-        <SolidSearchIcon className="pointer-events-none absolute top-3 left-4 h-8 w-8 text-gray-400" />
+        <SolidSearchIcon
+          className="pointer-events-none absolute top-3 left-4 h-8 w-8 text-gray-400"
+        />
         <input
           type="text"
           bind:value={searchValue}
@@ -155,7 +167,9 @@
           placeholder={$t("main.searchBuildingsName")}
         />
       </div>
-      <div class="h-[17rem] overflow-y-scroll bg-white shadow ring-1 ring-black ring-opacity-5 rounded-b-md">
+      <div
+        class="h-[17rem] overflow-y-scroll bg-white shadow ring-1 ring-black ring-opacity-5 rounded-b-md"
+      >
         <ul class="divide-y divide-gray-200">
           {#each filteredbuildings as building, i (building.value)}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -165,13 +179,21 @@
               on:click={() => {
                 localStorage.setItem("selectedBuildingId", building.value);
 
-                localStorage.setItem("buildingsData", JSON.stringify(filteredbuildings));
+                localStorage.setItem(
+                  "buildingsData",
+                  JSON.stringify(filteredbuildings)
+                );
                 handleClick("/welcome");
               }}
             >
-              <div class="block hover:bg-gray-100" class:bg-gray-50={i % 2 == 0}>
+              <div
+                class="block hover:bg-gray-100"
+                class:bg-gray-50={i % 2 == 0}
+              >
                 <div class="flex items-center pr-4 py-2 sm:pr-6">
-                  <div class="flex min-w-0 flex-1 basis-full md:basis-2/5 items-center">
+                  <div
+                    class="flex min-w-0 flex-1 basis-full md:basis-2/5 items-center"
+                  >
                     <div class="min-w-0 px-4">
                       <div>
                         <p class="truncate text-2xl font-medium">
@@ -180,11 +202,17 @@
                       </div>
                     </div>
                   </div>
-                  <div class="md:flex min-w-0 flex-1 basis-3/5 items-center hidden">
+                  <div
+                    class="md:flex min-w-0 flex-1 basis-3/5 items-center hidden"
+                  >
                     <div class="min-w-0 px-4">
                       <div>
                         <p class="flex items-center text-2xl text-gray-500">
-                          <img class="max-h-6" alt={building.name} src={buildImageUrl(building.logoImageUrl)} />
+                          <img
+                            class="max-h-6"
+                            alt={building.name}
+                            src={buildImageUrl(building.logoImageUrl)}
+                          />
                         </p>
                       </div>
                     </div>
