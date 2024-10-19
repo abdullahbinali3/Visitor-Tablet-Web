@@ -77,19 +77,11 @@
 
 <!-- This example requires Tailwind CSS v2.0+ -->
 <!-- Global notification live region, render this permanently at the end of the document -->
-<div aria-live="assertive" class="z-[1001] w-full pointer-events-none sm:items-start dark">
-  <div class="w-full flex flex-col items-center space-y-4 sm:items-end">
-    <!--
-        Notification panel, dynamically insert this into the live region when it needs to be displayed
-  
-        Entering: "transform ease-out duration-300 transition"
-          From: "translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
-          To: "translate-y-0 opacity-100 sm:translate-x-0"
-        Leaving: "transition ease-in duration-100"
-          From: "opacity-100"
-          To: "opacity-0"
-      -->
-    <div class="{containerColor} bg-white max-w-sm w-full shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
+<!-- Adjust the outermost container to take up the full width -->
+<div aria-live="assertive" class="z-[1001] w-full pointer-events-none sm:items-start">
+  <div class="w-full flex justify-center items-center space-y-4 sm:items-end">
+    <!-- Notification panel -->
+    <div class="{containerColor} w-full max-w-screen-lg shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
       <div class="p-4">
         <div class="flex items-start">
           {#if icon}
@@ -111,6 +103,7 @@
             {:else if (icon === "danger" || icon === "error") && ((Array.isArray(messages) && messages.length > 1) || (json !== null && multipleJsonEntries))}
               <p class="font-medium text-gray-900 dark:text-white pb-1">{$t("error.followingErrorsOccurred")}</p>
             {/if}
+            <!-- Displaying messages -->
             {#if messages === undefined && (icon === "error" || icon === "danger")}
               <p class:pre-whitespace={pre}>{$t("error.unknown")}</p>
             {:else if json !== null && jsonObjectEntries.length === 1 && jsonObjectEntries[0][1].length === 1}
@@ -165,3 +158,4 @@
     </div>
   </div>
 </div>
+

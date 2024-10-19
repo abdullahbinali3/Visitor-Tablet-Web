@@ -10,9 +10,11 @@
   export let isSelected = (item) => false;
   export let showItems = true; // Controls the visibility of the component
   export let placeholder = "";
+  export let onSearchChange = (value) => {}; // New prop for search change callback
 
   function updateSearch(val) {
     searchValue = val;
+    onSearchChange(val); // Notify the parent component
   }
 </script>
 

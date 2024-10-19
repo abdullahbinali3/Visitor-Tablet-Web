@@ -2,9 +2,11 @@
   import { t } from "svelte-i18n";
   import Button from "$components/common/Button.svelte";
   import Divider from "$components/common/Divider.svelte";
+  import  buildingData  from '$stores/buildings-store.js';
+  import { goto } from "@roxi/routify";
   // function for routing
   function handleClick(val) {
-      window.location.href = val;
+      $goto(val)
   }
 </script>
 
@@ -24,12 +26,12 @@
     <!-- Button Section -->
     <div class="flex flex-col sm:flex-row sm:justify-center sm:gap-10 lg:gap-[190px] mb-8">
       <!-- Sign In Button -->
-      <Button type="primary" on:click={()=>handleClick("/signin")} class="w-full sm:w-auto text-lg py-2 px-10 sm:px-16 lg:px-20 mb-4 sm:mb-0">
+      <Button type="primary" on:click={()=>handleClick("/sign-in")} class="w-full sm:w-auto text-lg py-2 px-10 sm:px-16 lg:px-20 mb-4 sm:mb-0">
         {$t("signin.signinButton")}
       </Button>
       
       <!-- Sign Out Button -->
-      <Button type="primary" on:click={()=>handleClick("/signout")} class="w-full sm:w-auto text-lg py-2 px-10 sm:px-16 lg:px-20">
+      <Button type="primary" on:click={()=>handleClick("/sign-out")} class="w-full sm:w-auto text-lg py-2 px-10 sm:px-16 lg:px-20">
         {$t("signout.signoutButton")}
       </Button>
     </div>
@@ -39,7 +41,7 @@
     
     <!-- Register Visitor Button -->
     <div class="flex justify-center">
-      <Button type="simple" on:click={()=>handleClick("/register_visitor")} class="w-full sm:w-auto py-3 sm:py-4 text-lg mt-5">
+      <Button type="simple" on:click={()=>handleClick("/register-visitor")} class="w-full sm:w-auto py-3 sm:py-4 text-lg mt-5">
         {$t("welcome.registerButton")}
       </Button>
     </div>
