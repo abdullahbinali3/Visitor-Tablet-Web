@@ -112,5 +112,6 @@
     "invalidPhoneNumber": "Invalid phone number.",
     "invalidDateRange": "Start date must be earlier than end date.",
     "visitorsRequired": "Visitors are required.",
-    "anotherVisitorRequired": "Another Visitor is required."
+    "anotherVisitorRequired": "Another Visitor is required.",
+    "No visitors available.":"No visitors available."
 }
