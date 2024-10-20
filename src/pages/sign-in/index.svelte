@@ -1,10 +1,19 @@
 <script>
+
+  import { onMount } from 'svelte';
   import { t } from "svelte-i18n";
   import Button from "$components/common/Button.svelte";
   import HostVisitorSelector from "$components/common/HostVisitorSelect.svelte";
   import Divider from "$components/common/Divider.svelte";
   import CaretLeftSolid from "$icons/SolidChevronLeftIcon.svelte";
   import { goto } from "@roxi/routify";
+  import { postVisitorData, getHosts, getVisitorByHostIds, postSignIn } from "$helpers/api.js";
+  import Notification from "$components/common/Notification.svelte";
+  import notificationStore from "$stores/notifications-store.js"; // Adjust the import path as necessary
+
+
+  
+  // State variables for managing host and visitor selection
   let filteredHosts = [];
   let filteredVisitors = [];
   let selectedHost = null;
@@ -12,35 +21,55 @@
   let showVisitors = false;
   let searchValueHost = "";
   let searchValueVisitor = "";
-
-  let hosts = [
-    { id: 1, name: "Host 1" },
-    { id: 2, name: "Host 2" },
-    { id: 3, name: "Host 3" },
-    { id: 4, name: "Host 4" },
-    { id: 5, name: "Host 5" },
-  ];
-
-  let visitors = [
-    { id: 1, name: "Visitor 1" },
-    { id: 2, name: "Visitor 2" },
-    { id: 3, name: "Visitor 3" },
-    { id: 4, name: "Visitor 4" },
-    { id: 5, name: "Visitor 5" },
-  ];
-
-  // Initialize with all hosts and visitors
+  let organizationId = localStorage.getItem("selectedOrganizationId");
+  let hosts = [];
+  let selectedHostId;
+  let visitorsIds = [];
+  let visitors = [];
+  let showToast = false;
+  let toastTitle = "";
+  let toastMessages = "";
+  let toastIcon = "success";
+   
+  // Set up filtered hosts and visitors on initialization
   filteredHosts = [...hosts];
   filteredVisitors = [...visitors];
 
+  // Fetch hosts data when component is mounted
+  onMount(() => {
+    getHosts(organizationId)
+      .then((response) => {
+        hosts = response.records;
+        filteredHosts = [...hosts];
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  });
+
+  
+
+  // Select a host and fetch associated visitors
   function selectHost(host) {
     selectedHost = host;
-    selectedVisitors = []; // Reset visitors on host selection
+    selectedHostId = host.value;
+    selectedVisitors = [];
     showVisitors = true;
-    searchValueVisitor = ""; // Reset visitor search input
+    searchValueVisitor = "";
     updateSearchVisitors("");
+
+    // Fetch visitors related to the selected host
+    getVisitorByHostIds(selectedHostId)
+      .then((response) => {
+        visitors = response;
+        filteredVisitors = [...visitors];
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
   }
 
+  // Toggle visitor selection
   function toggleVisitor(visitor) {
     if (selectedVisitors.includes(visitor)) {
       selectedVisitors = selectedVisitors.filter(v => v !== visitor);
@@ -48,13 +77,44 @@
       selectedVisitors = [...selectedVisitors, visitor];
     }
   }
-
+  function triggerToast(title, messages, icon) {
+  toastTitle = title;
+  toastMessages = messages;
+  toastIcon = icon;
+  showToast = true;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  // Automatically hide the toast after a few seconds
+  setTimeout(() => {
+    showToast = false;
+  }, 4500);
+}
+  // Submit selected host and visitors data
   function submitSelection() {
-    console.log("Selected Host:", selectedHost);
-    console.log("Selected Visitors:", selectedVisitors);
+    visitorsIds = selectedVisitors.map(visitor => visitor.uid);
+    const body = {
+      hostUid: selectedHostId,
+      uid: visitorsIds,
+      signInDate: new Date().toISOString()
+    };
+    const customHeader = { "Content-Type": "application/json" };
+
+    postSignIn(body, customHeader)
+      .then((response) => {
+        if(response == true){
+          triggerToast("Success!", ["Visitor sign in successfully"], "success");
+        }
+        else{
+          triggerToast("Error!", ["Failed to register visitor"], "error");
+        }
+      })
+      .catch((err) => {
+        triggerToast("Error!", ["Failed to register visitor"], "error");
+      });
+
     resetForm();
   }
 
+  // Reset form fields and state
   function resetForm() {
     selectedHost = null;
     selectedVisitors = [];
@@ -65,74 +125,94 @@
     showVisitors = false;
   }
 
+  // Filter hosts based on search input
   function updateSearchHosts(val) {
     searchValueHost = val;
-    filteredHosts = hosts.filter(host => host.name.toLowerCase().includes(val.toLowerCase()));
+    filteredHosts = hosts.filter(host => host.text.toLowerCase().includes(val.toLowerCase()));
   }
 
+  // Filter visitors based on search input
   function updateSearchVisitors(val) {
     searchValueVisitor = val;
-    filteredVisitors = visitors.filter(visitor => visitor.name.toLowerCase().includes(val.toLowerCase()));
+    filteredVisitors = visitors.filter(visitor => 
+      (visitor.firstName + " " + visitor.surname).toLowerCase().includes(val.toLowerCase())
+    );
   }
 
+  // Check if an item is in the selected list
   function isSelected(item, selectedList) {
     return selectedList.includes(item);
   }
 </script>
 
-<!-- Main Container -->
+<!-- Main Container for the sign-in form -->
 <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-background">
-  <!-- Content Container (with relative positioning) -->
   <div class="max-w-3xl w-full min-h-[500px] sm:min-h-[400px] space-y-4 bg-white p-10 sm:p-12 lg:p-16 rounded-3xl relative">
+    <!-- Notification for success or error messages -->
+   
+    {#if showToast}
+    <Notification
+      icon={toastIcon}
+      title={toastTitle}
+      messages={toastMessages}
+    />
+    {/if}
+
+    <!-- Back button navigation -->
     <div class="flex cursor-pointer" on:click={$goto("/welcome")}>
       <CaretLeftSolid />
       <p>Back</p>
-        </div>
-  <div class="mt-3 mb-12 text-4xl font-semibold text-center">{$t("title.signin")}</div>
+    </div>
 
+    <!-- Page title -->
+    <div class="mt-3 mb-12 text-4xl font-semibold text-center">{$t("title.signin")}</div>
 
+    <!-- Host selection component -->
+    <HostVisitorSelector 
+      title={$t("title.host")} 
+      searchValue={searchValueHost} 
+      filteredItems={filteredHosts} 
+      selectItem={selectHost} 
+      isSelected={(host) => selectedHost === host}
+      placeholder={$t("search.host")} 
+      onSearchChange={updateSearchHosts} 
+    />
 
-  <HostVisitorSelector 
-  title={$t("title.host")} 
-  searchValue={searchValueHost} 
-  filteredItems={filteredHosts} 
-  selectItem={selectHost} 
-  isSelected={(host) => selectedHost === host}
-  placeholder={$t("search.host")} 
-  onSearchChange={updateSearchHosts} 
-/>
+    <!-- Visitor selection component, shown only if visitors are available -->
+    {#if showVisitors && filteredVisitors.length > 0}
+      <HostVisitorSelector 
+        title={$t("title.visitor")} 
+        searchValue={searchValueVisitor} 
+        filteredItems={filteredVisitors} 
+        selectItem={toggleVisitor} 
+        isSelected={(visitor) => isSelected(visitor, selectedVisitors)}
+        placeholder={$t("search.visitor")} 
+        onSearchChange={updateSearchVisitors}
+      />
+    {:else if showVisitors}
+      <!-- Display message if no visitors are available -->
+      <p class="text-red-500 text-center mt-4">{$t("No visitors available.")}</p>
+    {/if}
 
-{#if showVisitors}
-  <HostVisitorSelector 
-    title={$t("title.visitor")} 
-    searchValue={searchValueVisitor} 
-    filteredItems={filteredVisitors} 
-    selectItem={toggleVisitor} 
-    isSelected={(visitor) => isSelected(visitor, selectedVisitors)}
-    placeholder={$t("search.visitor")} 
-    onSearchChange={updateSearchVisitors}
-  />
-{/if}
+    <!-- Submit Button -->
+    <div class="flex justify-center">
+      <Button
+        className="w-full"
+        on:click={submitSelection}
+        disabled={!selectedHost || selectedVisitors.length === 0 || filteredVisitors.length === 0}
+      >
+        {$t("signin.signinButton")}
+      </Button>
+    </div>
 
+    <!-- Divider between sections -->
+    <Divider />
 
-  <!-- Submit Button -->
-  <div class="flex justify-center">
-    <Button
-      className="w-full"
-      on:click={submitSelection}
-    >
-      {$t("signin.signinButton")}
-    </Button>
+    <!-- Option to sign in with QR code -->
+    <div class="flex justify-center">
+      <Button type="simple" className="w-full sm:w-auto py-3 sm:py-4 text-lg mt-5">
+        {$t("signin.qrButton")}
+      </Button>
+    </div>
   </div>
-
-  <!-- Or Divider -->
-  <Divider />
-
-  <!-- Sign in with QR Code Button -->
-  <div class="flex justify-center">
-  <Button type="simple" className="w-full sm:w-auto py-3 sm:py-4 text-lg mt-5">
-    {$t("signin.qrButton")}
-  </Button>
-</div>
-</div>
 </div>
