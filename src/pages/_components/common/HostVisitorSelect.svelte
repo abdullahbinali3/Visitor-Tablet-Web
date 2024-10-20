@@ -33,13 +33,14 @@
   {#if showItems}
     <div class="h-[10rem] overflow-y-scroll bg-white shadow ring-1 ring-black ring-opacity-5 rounded-b-md">
       <ul class="divide-y divide-gray-200">
+   
         {#each filteredItems as item}
           <li
             class="cursor-pointer px-4 py-2 truncate text-2xl font-medium"
             on:click={() => selectItem(item)}
             class:bg-gray-300={isSelected(item)}
           >
-            {item.name}
+            {item.text ? item.text : (item.firstName + " " + item.surname)}
           </li>
         {/each}
       </ul>
