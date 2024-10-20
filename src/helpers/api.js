@@ -5,11 +5,11 @@ const server_URL ="http://localhost:5695"
 // api calling for saving getting building according to the organizations
 export async function getbuildingData(id){
   buildingData.set({ loading: true, buildings: [], error: null });
-  const url = `${server_URL}/buildings/${id}/listForDropdown`;
+  const url = `${server_URL}/visitorTablet/buildings/${id}/list`;
 
   try {
     const data = await fetchApi(url, "GET"); 
-    buildingData.set({ buildings: data.records, loading: false, error: null });
+    buildingData.set({ buildings: data, loading: false, error: null });
     buildingData.subscribe(value => {
       console.log('Updated buildingData:', value);
     })();
@@ -38,7 +38,38 @@ export async function postVisitorData(body ,header){
 // api calling for getting hosts name
 export async function getHosts(id) {
   try {
-    const data = await fetchApi(`${server_URL}/users/${id}/listForDropdown`, "GET"  ); 
+    const data = await fetchApi(`${server_URL}/host/${id}/listForDropdown`, "GET"  ); 
+    return data;
+  } catch (error) {
+    return error
+  }
+  
+}
+
+// api calling for getting Vistors using host id
+export async function getVisitorByHostIds(id) {
+  try {
+    const data = await fetchApi(`${server_URL}/visitor/${id}/listForDropdown`, "GET"  ); 
+    return data;
+  } catch (error) {
+    return error
+  }
+  
+}
+
+export async function postSignIn(body ,header) {
+  try {
+    const data = await fetchApi(`${server_URL}/visitor/signin`, "PUT" , body ,header ); 
+    return data;
+  } catch (error) {
+    return error
+  }
+  
+}
+
+export async function postSignOut(body ,header) {
+  try {
+    const data = await fetchApi(`${server_URL}/visitor/signout`, "PUT" , body ,header ); 
     return data;
   } catch (error) {
     return error
