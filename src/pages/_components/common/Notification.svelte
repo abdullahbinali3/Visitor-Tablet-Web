@@ -79,7 +79,7 @@
 <!-- Global notification live region, render this permanently at the end of the document -->
 <!-- Adjust the outermost container to take up the full width -->
 <div aria-live="assertive" class="z-[1001] w-full pointer-events-none sm:items-start">
-  <div class="w-full flex justify-center items-center space-y-4 sm:items-end">
+  <div class="w-50 flex justify-center items-center space-y-4 sm:items-end">
     <!-- Notification panel -->
     <div class="{containerColor} w-full max-w-screen-lg shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
       <div class="p-4">
