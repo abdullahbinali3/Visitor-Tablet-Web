@@ -95,7 +95,6 @@
 
   // functon to submit api data
   async function handleSubmit(event) {
-    event.preventDefault();
 
     const { valid, errors: validationErrors } = validateForm(
       visitors,
@@ -205,7 +204,7 @@
       />
     {/if}
 
-    <form on:submit={handleSubmit}>
+    <form on:submit|preventDefault ={handleSubmit}>
       <div class="mb-6">
         <label for="host" class="block mb-2 text-gray-600"
           >{$t("registervisitor.selecthostLabel")}</label
