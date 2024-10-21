@@ -107,21 +107,14 @@
     addVisitor();
 
     const dataToSubmit = {
-      formCompletedByUid: userId,
       buildingId: buildingId,
       organizationId: organizationId,
       hostUid: visitors.host,
-      insertDateUtc: new Date().toISOString(),
       purpose: visitors.purpose,
       company: visitors.companyName,
-      signInDateUtc: new Date().toISOString(),
-      signOutDateUtc: new Date().toISOString(),
-      startDateUtc: new Date(
-        `${visitors.startDate}T${visitors.startTime}`
-      ).toISOString(),
-      endDateUtc: new Date(
-        `${visitors.endDate}T${visitors.endTime}`
-      ).toISOString(),
+      startDate: `${visitors.startDate}T${visitors.startTime}`,
+      endDate: `${visitors.endDate}T${visitors.endTime}`,
+      
       users: visitors.users.map((user) => ({
         firstName: user.firstName,
         surname: user.surname,
