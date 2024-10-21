@@ -95,7 +95,6 @@
 
   // functon to submit api data
   async function handleSubmit(event) {
-    event.preventDefault();
 
     const { valid, errors: validationErrors } = validateForm(
       visitors,
@@ -108,21 +107,14 @@
     addVisitor();
 
     const dataToSubmit = {
-      formCompletedByUid: userId,
       buildingId: buildingId,
       organizationId: organizationId,
       hostUid: visitors.host,
-      insertDateUtc: new Date().toISOString(),
       purpose: visitors.purpose,
       company: visitors.companyName,
-      signInDateUtc: new Date().toISOString(),
-      signOutDateUtc: new Date().toISOString(),
-      startDateUtc: new Date(
-        `${visitors.startDate}T${visitors.startTime}`
-      ).toISOString(),
-      endDateUtc: new Date(
-        `${visitors.endDate}T${visitors.endTime}`
-      ).toISOString(),
+      startDate: `${visitors.startDate}T${visitors.startTime}`,
+      endDate: `${visitors.endDate}T${visitors.endTime}`,
+      
       users: visitors.users.map((user) => ({
         firstName: user.firstName,
         surname: user.surname,
@@ -205,7 +197,7 @@
       />
     {/if}
 
-    <form on:submit={handleSubmit}>
+    <form on:submit|preventDefault ={handleSubmit}>
       <div class="mb-6">
         <label for="host" class="block mb-2 text-gray-600"
           >{$t("registervisitor.selecthostLabel")}</label

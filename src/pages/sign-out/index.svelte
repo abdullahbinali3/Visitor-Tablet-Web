@@ -89,9 +89,9 @@
     visitorsIds = selectedVisitors.map((visitor) => visitor.uid);
     console.log("Selected Visitors:", visitorsIds);
     const body = {
-      workplaceVisitId: selectedHostId,
+      hostUid: selectedHostId,
       uid: visitorsIds,
-      signOutDateUtc: new Date().toISOString(),
+      signOutDate: new Date().toISOString(),
     };
     const customHeader = {
       "Content-Type": "application/json",
