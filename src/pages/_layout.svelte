@@ -10,7 +10,6 @@
   import IconModal from "$components/modal/IconModal.svelte";
   import Nav from "$components/nav/Nav.svelte";
   import Notification from "$components/common/Notification.svelte";
-
   $: metatags.title = $appData.pageTitle ? $appData.pageTitle + " - Visitor Tablet Portal" : "Visitor Tablet Portal";
 
   let darkMode = false;
@@ -48,7 +47,7 @@
       {/if}
     {/each}
     {#if $notifications && $notifications.length > 0}
-      <div class="fixed inset-0 flex items-end w-full flex-col px-4 py-6 sm:p-6 space-y-4 pointer-events-none">
+      <div class="absolute top-0  bottom-0 inset-0 flex items-end w-full flex-col px-4 py-6 sm:p-6 space-y-4 pointer-events-none">
         {#each $notifications as notification, i (notification.notificationId)}
           <div class="w-full" in:fly={{ x: 24, duration: 300 }} out:fade={{ duration: 150 }} animate:flip={{ duration: 400 }}>
             <Notification
