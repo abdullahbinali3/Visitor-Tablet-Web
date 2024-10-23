@@ -15,10 +15,16 @@ export function isEmpty(val) {
 export function isValidEmail(val) {
   return isValidEmailRegex.test(val);
 }
+export function isPhoneValid(phone) {
+  return /^\+?[0-9]{10,15}$/.test(phone);
+}
 
 const isValidIntegerRegex = RegExp(
   "^-?[0-9]+$"
 );
+export function validateDates(visitors) {
+  return new Date(`${visitors.startDate}T${visitors.startTime}`) < new Date(`${visitors.endDate}T${visitors.endTime}`);
+}
 
 export function isInteger(val) {
   return isValidIntegerRegex.test(val);

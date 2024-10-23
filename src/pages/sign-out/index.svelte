@@ -13,6 +13,7 @@
     getVisitorByHostIds,
     postSignOut,
   } from "$helpers/api.js";
+  import {triggerToast } from "$helpers/toast.js";
   import Notification from "$components/common/Notification.svelte";
   let filteredHosts = [];
   let filteredVisitors = [];
@@ -26,10 +27,6 @@
   let selectedHostId;
   let visitorsIds = [];
   let visitors = [];
-  let showToast = false;
-  let toastTitle = "";
-  let toastMessages = [];
-  let toastIcon = "success";
 
   // Initialize with all hosts and visitors
   filteredHosts = [...hosts];
@@ -46,17 +43,6 @@
       });
   });
 
-  function triggerToast(title, messages, icon) {
-  toastTitle = title;
-  toastMessages = messages;
-  toastIcon = icon;
-  showToast = true;
-  window.scrollTo({ top: 0, behavior: "smooth" });
-  // Automatically hide the toast after a few seconds
-  setTimeout(() => {
-    showToast = false;
-  }, 4500);
-}
 
   function selectHost(host) {
     selectedHost = host;
@@ -89,9 +75,9 @@
     visitorsIds = selectedVisitors.map((visitor) => visitor.uid);
     console.log("Selected Visitors:", visitorsIds);
     const body = {
-      hostUid: selectedHostId,
+      workplaceVisitId: selectedHostId,
       uid: visitorsIds,
-      signOutDate: new Date().toISOString(),
+      signOutDateUtc: new Date().toISOString(),
     };
     const customHeader = {
       "Content-Type": "application/json",
@@ -156,13 +142,6 @@
   <div
     class="max-w-3xl w-full min-h-[500px] sm:min-h-[400px] space-y-4 bg-white p-10 sm:p-12 lg:p-16 rounded-3xl relative"
   >
-    {#if showToast}
-      <Notification
-        icon={toastIcon}
-        title={toastTitle}
-        messages={toastMessages}
-      />
-    {/if}
     <div class="flex cursor-pointer" on:click={$goto("/welcome")}>
       <CaretLeftSolid />
       <p>Back</p>
@@ -181,7 +160,7 @@
       onSearchChange={updateSearchHosts}
     />
 
-    {#if showVisitors && filteredVisitors.length > 0}
+    {#if showVisitors }
       <HostVisitorSelector
         title={$t("title.visitor")}
         searchValue={searchValueVisitor}
@@ -191,10 +170,6 @@
         placeholder={$t("search.visitor")}
         onSearchChange={updateSearchVisitors}
       />
-    {:else if showVisitors}
-      <p class="text-red-500 text-center mt-4">
-        {$t("No visitors available.")}
-      </p>
     {/if}
 
     <!-- Submit Button -->

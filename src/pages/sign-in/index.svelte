@@ -10,7 +10,7 @@
   import { postVisitorData, getHosts, getVisitorByHostIds, postSignIn } from "$helpers/api.js";
   import Notification from "$components/common/Notification.svelte";
   import notificationStore from "$stores/notifications-store.js"; // Adjust the import path as necessary
-
+  import {triggerToast } from "$helpers/toast.js";
 
   
   // State variables for managing host and visitor selection
@@ -77,17 +77,7 @@
       selectedVisitors = [...selectedVisitors, visitor];
     }
   }
-  function triggerToast(title, messages, icon) {
-  toastTitle = title;
-  toastMessages = messages;
-  toastIcon = icon;
-  showToast = true;
-  window.scrollTo({ top: 0, behavior: "smooth" });
-  // Automatically hide the toast after a few seconds
-  setTimeout(() => {
-    showToast = false;
-  }, 4500);
-}
+
   // Submit selected host and visitors data
   function submitSelection() {
     visitorsIds = selectedVisitors.map(visitor => visitor.uid);
@@ -148,17 +138,8 @@
 <!-- Main Container for the sign-in form -->
 <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-background">
   <div class="max-w-3xl w-full min-h-[500px] sm:min-h-[400px] space-y-4 bg-white p-10 sm:p-12 lg:p-16 rounded-3xl relative">
-    <!-- Notification for success or error messages -->
-   
-    {#if showToast}
-    <Notification
-      icon={toastIcon}
-      title={toastTitle}
-      messages={toastMessages}
-    />
-    {/if}
-
-    <!-- Back button navigation -->
+  
+     <!-- Back button navigation -->
     <div class="flex cursor-pointer" on:click={$goto("/welcome")}>
       <CaretLeftSolid />
       <p>Back</p>
@@ -179,7 +160,7 @@
     />
 
     <!-- Visitor selection component, shown only if visitors are available -->
-    {#if showVisitors && filteredVisitors.length > 0}
+    {#if showVisitors}
       <HostVisitorSelector 
         title={$t("title.visitor")} 
         searchValue={searchValueVisitor} 
@@ -189,9 +170,7 @@
         placeholder={$t("search.visitor")} 
         onSearchChange={updateSearchVisitors}
       />
-    {:else if showVisitors}
-      <!-- Display message if no visitors are available -->
-      <p class="text-red-500 text-center mt-4">{$t("No visitors available.")}</p>
+
     {/if}
 
     <!-- Submit Button -->

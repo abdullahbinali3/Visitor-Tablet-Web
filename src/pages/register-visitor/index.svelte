@@ -13,9 +13,10 @@
   import { t } from "svelte-i18n"; // Localization
   import appData from "$stores/app-data-store.js";
   import { postVisitorData, getHosts } from "$helpers/api.js";
-  import { validateForm } from "$helpers/errors.js";
-  import Notification from "$components/common/Notification.svelte";
+  import {triggerToast } from "$helpers/toast.js";
+  import { validateUserForm ,validateVisitorForm } from "$helpers/errors.js";
   import CaretLeftSolid from "$icons/SolidChevronLeftIcon.svelte";
+
   // State variables
   let hostItems = [];
   let showToast = false;
@@ -25,6 +26,7 @@
   let organizationId = localStorage.getItem("selectedOrganizationId");
   let userId = localStorage.getItem("uid");
   let buildingId = localStorage.getItem("selectedBuildingId");
+  
   let visitors = {
     host: "",
     companyName: "",
@@ -60,7 +62,6 @@
   // Handle form submission
   function resetForm() {
     visitors = {
-      location: "",
       host: "",
       companyName: "",
       purpose: "",
@@ -78,32 +79,24 @@
     };
     userLength = [];
     errors = {};
+
   }
 
-
-  function triggerToast(title, messages, icon) {
-  toastTitle = title;
-  toastMessages = messages;
-  toastIcon = icon;
-  showToast = true;
-  window.scrollTo({ top: 0, behavior: "smooth" });
-  // Automatically hide the toast after a few seconds
-  setTimeout(() => {
-    showToast = false;
-  }, 4500);
-}
-
   // functon to submit api data
-  async function handleSubmit(event) {
+  async function handleSubmit() {
 
-    const { valid, errors: validationErrors } = validateForm(
+    const { valid, errors: validationErrors } = validateVisitorForm(
       visitors,
-      userFields
     );
+    console.log("Validation Result:", { valid, errors: validationErrors });
     if (!valid) {
       errors = validationErrors;
       return;
     }
+    if (visitors.users.length === 0) {
+        triggerToast("Error!", ["At least one visitor is required"], "error");
+    return;
+  }
     addVisitor();
 
     const dataToSubmit = {
@@ -127,33 +120,37 @@
     };
 
     try {
-      await postVisitorData(dataToSubmit, customHeader);
-      triggerToast("Success!", ["Visitor registered successfully"], "success");
-      resetForm();
+      await postVisitorData(dataToSubmit, customHeader)
+      .then((response) => {
+        if(response){
+            triggerToast("Success!", ["Visitor registered successfully"], "success");
+           resetForm();
+        }
+        else{
+            triggerToast("Error!", ["Failed to register visitor"], "error");
+        }
+      })
+      console.log(dataToSubmit);
+      
     } catch (err) {
       console.error("Error submitting data:", err);
       triggerToast("Error!", ["Failed to register visitor"], "error");
     }
   }
-
   // Add user to the visitors object
   function addVisitor() {
-    const { valid, errors: validationErrors } = validateForm(
-      visitors,
-      userFields
-    );
-    if (!valid) {
-      errors = validationErrors;
-      return;
-    }
-
-    // Add the current userFields to the users array in visitors
-
-    visitors.users?.push({ ...userFields }); // Add user details
-    clearFormFields(); // Clear input fields
-    userLength = visitors.users;
-    console.log(visitors);
+  const { valid, errors: validationErrors } = validateUserForm(userFields);
+  if (!valid) {
+    errors = validationErrors;
+    return;
   }
+
+  // Add the user details to the visitors array
+  visitors.users.push({ ...userFields });
+  clearFormFields(); // Clear input fields
+  userLength = visitors.users;
+  console.log(visitors);
+}
 
   // Clear all input fields
   function clearFormFields() {
@@ -179,8 +176,7 @@
   class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-background"
 >
   <div
-    class="max-w-3xl w-full min-h-[500px] sm:min-h-[400px] space-y-4 bg-white p-10 sm:p-12 lg:p-16 rounded-3xl relative"
-  >
+    class="max-w-3xl w-full min-h-[500px] sm:min-h-[400px] space-y-4 bg-white p-10 sm:p-12 lg:p-16 rounded-3xl relative">
     <div class="flex cursor-pointer" on:click={$goto("/welcome")}>
       <CaretLeftSolid />
       <p>Back</p>
@@ -189,15 +185,7 @@
       {$t("registervisitor.title")}
     </h1>
 
-    {#if showToast}
-      <Notification
-        icon={toastIcon}
-        title={toastTitle}
-        messages={toastMessages}
-      />
-    {/if}
-
-    <form on:submit|preventDefault ={handleSubmit}>
+    <form on:submit|preventDefault={handleSubmit}>
       <div class="mb-6">
         <label for="host" class="block mb-2 text-gray-600"
           >{$t("registervisitor.selecthostLabel")}</label
@@ -326,9 +314,10 @@
 
       <div class="flex justify-center">
         <Button
+         type="submit"
           className="w-full sm:w-auto py-3 sm:py-4 text-lg mt-5"
           on:click={handleSubmit}
-          type="submit"
+          
         >
           {$t("submit.submitButton")}
         </Button>
@@ -336,3 +325,8 @@
     </form>
   </div>
 </div>
+
+
+  
+ 
+  
