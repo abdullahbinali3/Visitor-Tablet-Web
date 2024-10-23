@@ -138,17 +138,8 @@
 <!-- Main Container for the sign-in form -->
 <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-background">
   <div class="max-w-3xl w-full min-h-[500px] sm:min-h-[400px] space-y-4 bg-white p-10 sm:p-12 lg:p-16 rounded-3xl relative">
-    <!-- Notification for success or error messages -->
-   
-    {#if showToast}
-    <Notification
-      icon={toastIcon}
-      title={toastTitle}
-      messages={toastMessages}
-    />
-    {/if}
-
-    <!-- Back button navigation -->
+  
+     <!-- Back button navigation -->
     <div class="flex cursor-pointer" on:click={$goto("/welcome")}>
       <CaretLeftSolid />
       <p>Back</p>

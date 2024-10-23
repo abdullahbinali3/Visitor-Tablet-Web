@@ -18,7 +18,7 @@ export default {
   },
   removeNotification: notificationId => {
     notifications.update(items => {
-      return items.filter((value, idx, arr) => {
+      return items.filter((value) => {
         return value.notificationId != notificationId;
       });
     });

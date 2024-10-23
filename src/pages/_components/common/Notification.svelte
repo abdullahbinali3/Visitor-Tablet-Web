@@ -42,7 +42,7 @@
     jsonObjectEntries = null;
   }
 
-  function closeModal() {
+  function closeModal() {  
     if (timeout) {
       clearTimeout(timeout);
     }
@@ -80,10 +80,10 @@
 <!-- This example requires Tailwind CSS v2.0+ -->
 <!-- Global notification live region, render this permanently at the end of the document -->
 <!-- Adjust the outermost container to take up the full width -->
-<div aria-live="assertive" class="w-full pointer-events-none sm:items-start">
+<div aria-live="assertive" class="w-full pointer-events-auto mb-5  sm:items-start">
   <div class="w-full flex py-12 justify-center  items-center mb-12 space-y-4  sm:items-end">
     <!-- Notification panel -->
-    <div class="{containerColor} w-full lg:w-1/2 mt-0 max-w-screen-lg shadow-lg rounded-lg  ring-1 ring-black ring-opacity-5 overflow-hidden">
+    <div class="{containerColor} w-full lg:w-1/2 mt-0 max-w-screen-lg bg-white shadow-lg rounded-lg  ring-1 ring-black ring-opacity-5 overflow-hidden">
       <div class="p-4">
         <div class="flex items-start">
           {#if icon}
